@@ -25,9 +25,9 @@ import Foundation
 struct RE {
     let regex: NSRegularExpression
     
-    init(_ pattern: String, optoins: NSRegularExpression.Options = []) throws {
+    init(_ pattern: String, options: NSRegularExpression.Options = []) throws {
         try regex = NSRegularExpression(pattern: pattern,
-                                        options: optoins)
+                                        options: options)
     }
     
     func findFirst(_ input: String, options: NSRegularExpression.MatchingOptions = []) -> [String]? {

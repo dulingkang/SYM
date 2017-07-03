@@ -48,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29562B041F0A350900C320E1 /* CrashFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashFileManager.swift; sourceTree = "<group>"; };
 		510777781EFBA4C30055E8BD /* AppleDemo.ips */ = {isa = PBXFileReference; lastKnownFileType = text; path = AppleDemo.ips; sourceTree = "<group>"; };
 		511F80711E77A14000C69C43 /* PlistDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistDocument.swift; sourceTree = "<group>"; };
 		514B4F6A1E30AC9100171990 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -212,6 +213,7 @@
 			children = (
 				F45320FA1D30A33C00639917 /* Crash.swift */,
 				F4184EE21D32396100E08040 /* CrashOutput.swift */,
+				29562B041F0A350900C320E1 /* CrashFileManager.swift */,
 				51C9A4A11EEFF78500F21AE4 /* Doctor.swift */,
 				F4A8DC0F1D525DAC00ACC4E5 /* Symbolicate.swift */,
 				F422C7C41D36A6A000066837 /* Dsym.swift */,
@@ -516,6 +518,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SYM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = im.zorro.SYM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -532,6 +535,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SYM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = im.zorro.SYM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

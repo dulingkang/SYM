@@ -190,4 +190,22 @@ extension FileManager {
         let uuid = ProcessInfo.processInfo.globallyUniqueString
         return (NSTemporaryDirectory() as NSString).appendingPathComponent(uuid)
     }
+    
+    func crashFilePaths() -> [URL] {
+        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        var crashPathURLs: [URL] = []
+        do {
+            // Get the directory contents urls (including subfolders urls)
+            let crashPathURl = documentsUrl.appendingPathComponent("/Crash/crash")
+            crashPathURLs = try FileManager.default.contentsOfDirectory(at: crashPathURl, includingPropertiesForKeys: nil, options: [])
+            print(crashPathURLs)
+            
+            // if you want to filter the directory contents you can do like this:
+            let logFiles = crashPathURLs.filter{ $0.pathExtension == "log" }
+            print("logFiles urls:",logFiles)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        return crashPathURLs
+    }
 }

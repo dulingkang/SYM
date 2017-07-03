@@ -35,23 +35,23 @@ struct LineRE {
     static let thread = try! RE("Thread (\\d{1,3})(?:[: ])(?:(?:(Crashed):)|(?:name:\\s+(.*)))*$")
     
     // Process demo [1111]
-    static let process = try! RE("^Process:\\s*([^\\s]+)\\s*\\[*", optoins: .anchorsMatchLines)
+    static let process = try! RE("^Process:\\s*([^\\s]+)\\s*\\[*", options: .anchorsMatchLines)
     
     // Binary Image: demo
     static let binaryImage = try! RE("Binary Image:\\s*([^\\s]+)")
     
     // Frame with specified binary
     static func frame(_ binary: String, options: NSRegularExpression.Options = .anchorsMatchLines) -> RE? {
-        return try? RE("^\\s*(\\d{1,3})\\s+(\(binary))\\s+(0[xX][A-Fa-f0-9]+)\\s+(.*)", optoins: options)
+        return try? RE("^\\s*(\\d{1,3})\\s+(\(binary))\\s+(0[xX][A-Fa-f0-9]+)\\s+(.*)", options: options)
     }
     
     // Image with specified binary
     static func image(_ binary: String, options: NSRegularExpression.Options = .anchorsMatchLines) -> RE? {
-        return try? RE("\\s*(0[xX][A-Fa-f0-9]+)\\s+-\\s+\\w+\\s+(\(binary))\\s*(\\w+)\\s*<(.*)>", optoins: options)
+        return try? RE("\\s*(0[xX][A-Fa-f0-9]+)\\s+-\\s+\\w+\\s+(\(binary))\\s*(\\w+)\\s*<(.*)>", options: options)
     }
     
     // UUID: E5B0A378-6816-3D90-86FD-2AEF15894A85
-    static let uuid = try! RE("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{8}", optoins: [.anchorsMatchLines, .caseInsensitive])
+    static let uuid = try! RE("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{8}", options: [.anchorsMatchLines, .caseInsensitive])
 }
 
 class Crash {
@@ -128,7 +128,6 @@ class Crash {
             
             newLines.append(line)
         }
-        
         return newLines.joined(separator: "\n")
     }
 }
