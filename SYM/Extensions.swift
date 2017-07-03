@@ -202,7 +202,9 @@ extension FileManager {
             
             // if you want to filter the directory contents you can do like this:
             let logFiles = crashPathURLs.filter{ $0.pathExtension == "log" }
+            
             print("logFiles urls:",logFiles)
+            return logFiles
         } catch let error as NSError {
             print(error.localizedDescription)
         }

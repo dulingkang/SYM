@@ -43,6 +43,12 @@ extension Crash {
         var keyFrameRanges = [NSRange]()
         
         for line in lines {
+            let identifier = "Incident Identifier"
+            if line.contains(identifier) {
+                let start = line.index(line.startIndex, offsetBy: 20)
+                print(line.substring(from: start))
+            }
+            
             if let group = LineRE.frame.match(line) {
                 let frame = Frame(index: group[0], image: group[1], address: group[2], symbol: group[3])
                 if frame.image == self.appName {
