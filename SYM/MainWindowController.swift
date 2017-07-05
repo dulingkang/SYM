@@ -144,12 +144,12 @@ extension MainWindowController {
         }
     }
     
-    func updateCrash(_ newContent: String) {
-        let document = self.document as! CrashDocument
-        document.content = newContent
-        self.window?.isDocumentEdited = (self.crashContent != newContent)
-        self.sendNotification(.crashUpdated)
-    }
+//    func updateCrash(_ newContent: String) {
+//        let document = self.document as! CrashDocument
+//        document.content = newContent
+//        self.window?.isDocumentEdited = (self.crashContent != newContent)
+////        self.sendNotification(.crashUpdated)
+//    }
     
     @IBAction func symbolicate(_ sender: AnyObject?) {
         
@@ -162,9 +162,58 @@ extension MainWindowController {
                 let new = SYM.symbolicate(crash: crash, dsym: self.dsym?.path)
                 DispatchQueue.main.async { [weak self] in
                     self?.indicator.stopAnimation(nil)
-                    self?.updateCrash(new)
-                    self?.sendNotification(.crashSymbolicated)
+                    self?.saveDataToFile(content: new)
                 }
+            }
+        }
+    }
+    func saveDataToFile(content:String){
+        let crash = parseCrash(fromContent: content)
+        let result = NSMutableString()
+        if let dict = crash?.generateDBDict() {
+            let title = dict[StoredToDBKey.ExceptionType.rawValue] ?? ""
+            result.append(title)
+            result.append("\t")
+            let description = dict[StoredToDBKey.Description.rawValue] ?? ""
+            result.append(description)
+            result.append("\t")
+            let identifier = dict[StoredToDBKey.Identifier.rawValue] ?? ""
+            result.append(identifier)
+            result.append("\t")
+            let hardware = dict[StoredToDBKey.Hardware.rawValue] ?? ""
+            result.append(hardware)
+            result.append("\t")
+            let bundleId = dict[StoredToDBKey.BundleId.rawValue] ?? ""
+            result.append(bundleId)
+            result.append("\t")
+            let sdkVersion = dict[StoredToDBKey.SDKVersion.rawValue] ?? ""
+            result.append(sdkVersion)
+            result.append("\t")
+            let appVersion = dict[StoredToDBKey.AppVersion.rawValue] ?? ""
+            result.append(appVersion)
+            result.append("\t")
+            let userId = dict[StoredToDBKey.UserID.rawValue] ?? ""
+            result.append(userId)
+            result.append("\t")
+            let time = dict[StoredToDBKey.Time.rawValue] ?? ""
+            result.append(time)
+            result.append("\t")
+            let osVersion = dict[StoredToDBKey.OSVersion.rawValue] ?? ""
+            result.append(osVersion)
+            result.append("\t")
+            let name = crash?.appName ?? ""
+            result.append(name)
+            result.append("\t")
+            result.append(content)
+            result.append("\t")
+            
+            let crashPathURl = FileManager.default.crashMainDir().appendingPathComponent("sql.txt")
+            //writing
+            do {
+                try result.write(to: crashPathURl, atomically: true, encoding: String.Encoding.utf8.rawValue)
+            }
+            catch {
+                print("write sql.txt error!!!!")
             }
         }
     }

@@ -191,12 +191,16 @@ extension FileManager {
         return (NSTemporaryDirectory() as NSString).appendingPathComponent(uuid)
     }
     
-    func crashFilePaths() -> [URL] {
+    func crashMainDir() -> URL {
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsUrl.appendingPathComponent("/Crash/")
+    }
+    
+    func crashFilePaths() -> [URL] {
         var crashPathURLs: [URL] = []
         do {
             // Get the directory contents urls (including subfolders urls)
-            let crashPathURl = documentsUrl.appendingPathComponent("/Crash/crash")
+            let crashPathURl = self.crashMainDir().appendingPathComponent("/crash/")
             crashPathURLs = try FileManager.default.contentsOfDirectory(at: crashPathURl, includingPropertiesForKeys: nil, options: [])
             print(crashPathURLs)
             

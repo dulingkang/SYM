@@ -37,43 +37,68 @@ struct Style {
 }
 
 extension Crash {
-    func pretty() -> NSAttributedString {
+    func generateDBDict() -> [String: String] {
         let lines = self.content.components(separatedBy: "\n")
-        let result = NSMutableString()
-        var keyFrameRanges = [NSRange]()
+        //        let result = NSMutableString()
+        //        var keyFrameRanges = [NSRange]()
+        // the value need to stored in remote mysql
+        var dbDict = [StoredToDBKey.Identifier.rawValue:"", StoredToDBKey.Hardware.rawValue:"", StoredToDBKey.BundleId.rawValue:"", StoredToDBKey.UserID.rawValue:"", StoredToDBKey.SDKVersion.rawValue:"", StoredToDBKey.AppVersion.rawValue:"", StoredToDBKey.Time.rawValue:"", StoredToDBKey.ExceptionType.rawValue:"", StoredToDBKey.Description.rawValue:""]
         
         for line in lines {
-            let identifier = "Incident Identifier"
-            if line.contains(identifier) {
-                let start = line.index(line.startIndex, offsetBy: 20)
-                print(line.substring(from: start))
+            if line.contains(StoredToDBKey.Identifier.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Identifier.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Identifier.rawValue)
+            } else if line.contains(StoredToDBKey.Hardware.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Hardware.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Hardware.rawValue)
+            } else if line.contains(StoredToDBKey.BundleId.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.BundleId.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.BundleId.rawValue)
+            } else if line.contains(StoredToDBKey.UserID.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.UserID.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.UserID.rawValue)
+            } else if line.contains(StoredToDBKey.SDKVersion.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.SDKVersion.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.SDKVersion.rawValue)
+            } else if let _ = LineRE.appVersion.match(line) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.AppVersion.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.AppVersion.rawValue)
+            } else if line.contains(StoredToDBKey.Time.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Time.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Time.rawValue)
+            } else if line.contains(StoredToDBKey.ExceptionType.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.ExceptionType.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.ExceptionType.rawValue)
+            } else if line.contains(StoredToDBKey.Description.rawValue) {
+                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Description.rawValue.characters.count)
+                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Description.rawValue)
             }
+            //            if let group = LineRE.frame.match(line) {
+            //                let frame = Frame(index: group[0], image: group[1], address: group[2], symbol: group[3])
+            //                if frame.image == self.appName {
+            //                    let startIndex = result.length
+            //                    result.append(frame.description)
+            //                    let endIndex = result.length
+            //                    keyFrameRanges.append(NSMakeRange(startIndex, endIndex-startIndex))
+            //                } else {
+            //                    result.append(frame.description)
+            //                }
+            //            } else {
+            //                result.append(line)
+            //            }
+            //
+            //            result.append("\n")
+            //        }
+            // Remove the last "\n"
+            //        result.deleteCharacters(in: NSMakeRange(result.length - 1, 1))
             
-            if let group = LineRE.frame.match(line) {
-                let frame = Frame(index: group[0], image: group[1], address: group[2], symbol: group[3])
-                if frame.image == self.appName {
-                    let startIndex = result.length
-                    result.append(frame.description)
-                    let endIndex = result.length
-                    keyFrameRanges.append(NSMakeRange(startIndex, endIndex-startIndex))
-                } else {
-                    result.append(frame.description)
-                }
-            } else {
-                result.append(line)
-            }
+            //        let attr = NSMutableAttributedString(string: result as String, attributes: Style.plain.attrs)
+            //        for r in keyFrameRanges {
+            //            attr.setAttributes(Style.keyFrame.attrs, range: r)
+            //        }
             
-            result.append("\n")
         }
-        
-        // Remove the last "\n"
-        result.deleteCharacters(in: NSMakeRange(result.length - 1, 1))
-        
-        let attr = NSMutableAttributedString(string: result as String, attributes: Style.plain.attrs)
-        for r in keyFrameRanges {
-            attr.setAttributes(Style.keyFrame.attrs, range: r)
-        }
-        
-        return attr
+        print(dbDict)
+        return dbDict
     }
 }

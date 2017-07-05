@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29562B061F0B234E00C320E1 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29562B051F0B234E00C320E1 /* Constant.swift */; };
 		510777791EFBA4E20055E8BD /* AppleDemo.ips in Resources */ = {isa = PBXBuildFile; fileRef = 510777781EFBA4C30055E8BD /* AppleDemo.ips */; };
 		511F80721E77A14000C69C43 /* PlistDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511F80711E77A14000C69C43 /* PlistDocument.swift */; };
 		514B4F6B1E30AC9100171990 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514B4F6A1E30AC9100171990 /* Foundation.framework */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		29562B041F0A350900C320E1 /* CrashFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashFileManager.swift; sourceTree = "<group>"; };
+		29562B051F0B234E00C320E1 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		510777781EFBA4C30055E8BD /* AppleDemo.ips */ = {isa = PBXFileReference; lastKnownFileType = text; path = AppleDemo.ips; sourceTree = "<group>"; };
 		511F80711E77A14000C69C43 /* PlistDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistDocument.swift; sourceTree = "<group>"; };
 		514B4F6A1E30AC9100171990 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -155,6 +157,7 @@
 				F45321091D30CCBF00639917 /* SubProcess.swift */,
 				F422C7C21D36A66800066837 /* FileFinder.swift */,
 				F4A679751E213CDD009F93E7 /* Notifications.swift */,
+				29562B051F0B234E00C320E1 /* Constant.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				F45321041D30CC4600639917 /* Extensions.swift in Sources */,
 				F45B68F31E227B8100128D8D /* MainWindowController.swift in Sources */,
 				F405436A1D321E37009B2923 /* Window.swift in Sources */,
+				29562B061F0B234E00C320E1 /* Constant.swift in Sources */,
 				F4A679761E213CDD009F93E7 /* Notifications.swift in Sources */,
 				F4A679741E21319D009F93E7 /* BundleDocument.swift in Sources */,
 				51B8D7281D4F6A0000F2C24C /* ContentViewController.swift in Sources */,
