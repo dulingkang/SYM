@@ -132,6 +132,18 @@ extension String {
         
         return (list[0].strip(), list[1].strip())
     }
+    
+    func fromBase64() -> String? {
+        guard let data = Data(base64Encoded: self) else {
+            return nil
+        }
+        
+        return String(data: data, encoding: .utf8)
+    }
+    
+    func toBase64() -> String {
+        return Data(self.utf8).base64EncodedString()
+    }
 }
 
 // MARK: - Dictionary
@@ -152,7 +164,7 @@ enum FileError: Error {
 }
 
 extension FileManager {
-    func findOrCreateDirectory(searchPathDirectory directory: FileManager.SearchPathDirectory, inDomain domain: FileManager.SearchPathDomainMask, appendPathComponent component: String?) throws -> String {
+    func findOrCreateDirectory(searchPathDirectory directory: FileManager.SearchPathDirectory, inDomain domain: FileManager.SearchPathDomainMask, appendPathComponent component: String?) throws -> URL {
         let paths = NSSearchPathForDirectoriesInDomains(directory, domain, true)
         
         if paths.count == 0 {
@@ -163,20 +175,21 @@ extension FileManager {
         if component != nil {
             path = (path as NSString).appendingPathComponent(component!)
         }
-        
-        do {
-            try self.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            throw FileError.createFailed
+        if !self.fileExists(atPath: path) {
+            do {
+                try self.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                throw FileError.createFailed
+            }
         }
         
-        return path
+        return URL(string: path)!
     }
     
-    func appSupportDirectory() -> String? {
+    func appSupportDirectory() -> URL? {
         let app = Bundle.main.infoDictionary!["CFBundleExecutable"] as! String
         
-        let path: String
+        let path: URL
         do {
             path = try self.findOrCreateDirectory(searchPathDirectory: .applicationSupportDirectory, inDomain: .userDomainMask, appendPathComponent: app)
         } catch {
@@ -192,8 +205,12 @@ extension FileManager {
     }
     
     func crashMainDir() -> URL {
-        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        return documentsUrl.appendingPathComponent("/Crash/")
+        var crashPath = URL(string: "")
+        do {
+            crashPath = try self.findOrCreateDirectory(searchPathDirectory: .documentDirectory, inDomain: .userDomainMask, appendPathComponent: "/Crash")
+        } catch {
+        }
+        return crashPath!
     }
     
     func crashFilePaths() -> [URL] {
@@ -206,12 +223,33 @@ extension FileManager {
             
             // if you want to filter the directory contents you can do like this:
             let logFiles = crashPathURLs.filter{ $0.pathExtension == "log" }
-            
             print("logFiles urls:",logFiles)
+            assert(crashPathURLs.count > 0, "crash file is not exist in \(logFiles)")
             return logFiles
         } catch let error as NSError {
             print(error.localizedDescription)
         }
         return crashPathURLs
+    }
+    
+    func searchAndCreateFile(path: String) {
+        if !self.fileExists(atPath: path) {
+            self.createFile(atPath: path, contents: nil, attributes: nil)
+        }
+    }
+}
+
+extension Data {
+    func append(fileURL: URL) throws {
+        if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
+            defer {
+                fileHandle.closeFile()
+            }
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(self)
+        }
+        else {
+            try write(to: fileURL, options: .atomic)
+        }
     }
 }

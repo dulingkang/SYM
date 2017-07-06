@@ -177,9 +177,6 @@ extension MainWindowController {
             let description = dict[StoredToDBKey.Description.rawValue] ?? ""
             result.append(description)
             result.append("\t")
-            let identifier = dict[StoredToDBKey.Identifier.rawValue] ?? ""
-            result.append(identifier)
-            result.append("\t")
             let hardware = dict[StoredToDBKey.Hardware.rawValue] ?? ""
             result.append(hardware)
             result.append("\t")
@@ -204,16 +201,16 @@ extension MainWindowController {
             let name = crash?.appName ?? ""
             result.append(name)
             result.append("\t")
-            result.append(content)
-            result.append("\t")
+            result.append(content.toBase64())
+            result.append("\t\n")
             
-            let crashPathURl = FileManager.default.crashMainDir().appendingPathComponent("sql.txt")
-            //writing
+            let crashPathURL = FileManager.default.crashMainDir().appendingPathComponent("sql.txt")
+            FileManager.default.searchAndCreateFile(path: crashPathURL.absoluteString)
+            let resultData = result.data(using: String.Encoding.utf8.rawValue)
             do {
-                try result.write(to: crashPathURl, atomically: true, encoding: String.Encoding.utf8.rawValue)
-            }
-            catch {
-                print("write sql.txt error!!!!")
+                try resultData?.append(fileURL: crashPathURL)
+            } catch {
+                print("\(crashPathURL) sql write failed!!")
             }
         }
     }

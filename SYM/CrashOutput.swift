@@ -39,16 +39,11 @@ struct Style {
 extension Crash {
     func generateDBDict() -> [String: String] {
         let lines = self.content.components(separatedBy: "\n")
-        //        let result = NSMutableString()
-        //        var keyFrameRanges = [NSRange]()
         // the value need to stored in remote mysql
-        var dbDict = [StoredToDBKey.Identifier.rawValue:"", StoredToDBKey.Hardware.rawValue:"", StoredToDBKey.BundleId.rawValue:"", StoredToDBKey.UserID.rawValue:"", StoredToDBKey.SDKVersion.rawValue:"", StoredToDBKey.AppVersion.rawValue:"", StoredToDBKey.Time.rawValue:"", StoredToDBKey.ExceptionType.rawValue:"", StoredToDBKey.Description.rawValue:""]
+        var dbDict = [StoredToDBKey.Hardware.rawValue:"", StoredToDBKey.BundleId.rawValue:"", StoredToDBKey.UserID.rawValue:"", StoredToDBKey.SDKVersion.rawValue:"", StoredToDBKey.AppVersion.rawValue:"", StoredToDBKey.Time.rawValue:"", StoredToDBKey.ExceptionType.rawValue:"", StoredToDBKey.Description.rawValue:""]
         
         for line in lines {
-            if line.contains(StoredToDBKey.Identifier.rawValue) {
-                let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Identifier.rawValue.characters.count)
-                dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Identifier.rawValue)
-            } else if line.contains(StoredToDBKey.Hardware.rawValue) {
+            if line.contains(StoredToDBKey.Hardware.rawValue) {
                 let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Hardware.rawValue.characters.count)
                 dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Hardware.rawValue)
             } else if line.contains(StoredToDBKey.BundleId.rawValue) {
@@ -73,30 +68,14 @@ extension Crash {
                 let start = line.index(line.startIndex, offsetBy: StoredToDBKey.Description.rawValue.characters.count)
                 dbDict.updateValue(line.substring(from: start).strip(), forKey: StoredToDBKey.Description.rawValue)
             }
-            //            if let group = LineRE.frame.match(line) {
-            //                let frame = Frame(index: group[0], image: group[1], address: group[2], symbol: group[3])
-            //                if frame.image == self.appName {
-            //                    let startIndex = result.length
-            //                    result.append(frame.description)
-            //                    let endIndex = result.length
-            //                    keyFrameRanges.append(NSMakeRange(startIndex, endIndex-startIndex))
-            //                } else {
-            //                    result.append(frame.description)
-            //                }
-            //            } else {
-            //                result.append(line)
-            //            }
-            //
-            //            result.append("\n")
-            //        }
-            // Remove the last "\n"
-            //        result.deleteCharacters(in: NSMakeRange(result.length - 1, 1))
-            
-            //        let attr = NSMutableAttributedString(string: result as String, attributes: Style.plain.attrs)
-            //        for r in keyFrameRanges {
-            //            attr.setAttributes(Style.keyFrame.attrs, range: r)
-            //        }
-            
+            if (dbDict[StoredToDBKey.Description.rawValue]?.characters.count)! < 1 {
+                if let group = LineRE.frame.match(line) {
+                    let frame = Frame(index: group[0], image: group[1], address: group[2], symbol: group[3])
+                    if frame.image == self.appName {
+                        dbDict.updateValue(group[3], forKey: StoredToDBKey.Description.rawValue)
+                    }
+                }
+            }
         }
         print(dbDict)
         return dbDict

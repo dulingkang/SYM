@@ -9,7 +9,6 @@
 import Foundation
 
 enum StoredToDBKey: String {
-    case Identifier = "Incident Identifier:"
     case Hardware = "Hardware Model:"
     case Process = "Process:"
     case UserID = "User ID:"
