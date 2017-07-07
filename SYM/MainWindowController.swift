@@ -60,6 +60,7 @@ class MainWindowController: NSWindowController {
         self.setupDsymMenu()
         DsymManager.shared.updateDsymList()
         NotificationCenter.default.addObserver(self, selector: #selector(dsymListDidUpdate), name: .dsymListUpdated, object: nil)
+        self.symbolicate(nil)
     }
     
     @objc func dsymListDidUpdate(notification: Notification) {
@@ -151,7 +152,7 @@ extension MainWindowController {
 ////        self.sendNotification(.crashUpdated)
 //    }
     
-    @IBAction func symbolicate(_ sender: AnyObject?) {
+    func symbolicate(_ sender: AnyObject?) {
         for fileURL in FileManager.default.crashFilePaths() {
             let crashContent = try! String(contentsOf: fileURL)
             if let crash = parseCrash(fromContent: crashContent) {

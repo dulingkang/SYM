@@ -497,9 +497,6 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
-                                        <connections>
-                                            <action selector="symbolicate:" target="akE-CK-Bh4" id="MZk-Xf-oCd"/>
-                                        </connections>
                                     </button>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="6607E1B6-AD95-4E9E-A78A-8F61E2062A59" label="Symbolicate Progress" paletteLabel="Symbolicate Progress" tag="-1" id="Elg-kw-8wH">
