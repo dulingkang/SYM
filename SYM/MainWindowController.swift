@@ -152,22 +152,15 @@ extension MainWindowController {
 //    }
     
     @IBAction func symbolicate(_ sender: AnyObject?) {
-        
-        let fileURL = FileManager.default.crashFilePaths()[0]
-        let crashContent = try! String(contentsOf: fileURL)
-        
-        if let crash = parseCrash(fromContent: crashContent) {
-            self.indicator.startAnimation(nil)
-            DispatchQueue.global().async {
+        for fileURL in FileManager.default.crashFilePaths() {
+            let crashContent = try! String(contentsOf: fileURL)
+            if let crash = parseCrash(fromContent: crashContent) {
                 let new = SYM.symbolicate(crash: crash, dsym: self.dsym?.path)
-                DispatchQueue.main.async { [weak self] in
-                    self?.indicator.stopAnimation(nil)
-                    self?.saveDataToFile(content: new)
-                }
+                self.saveDataToFile(content: new)
             }
         }
     }
-    func saveDataToFile(content:String){
+    func saveDataToFile(content:String) {
         let crash = parseCrash(fromContent: content)
         let result = NSMutableString()
         if let dict = crash?.generateDBDict() {
